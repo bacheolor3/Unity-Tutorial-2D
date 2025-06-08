@@ -1,8 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using Cat; // ì‚¬ìš´ë“œ ë§¤ë‹ˆì €ê°€ ìˆëŠ” namespace
 
 public class CatController : MonoBehaviour
 {
+    public SoundManager soundManager; // public ìœ¼ë¡œ ì„¤ì •í–ˆê¸° ë•Œë¬¸ì— ìœ ë‹ˆí‹° ìƒì—ì„œ í• ë‹¹ ì˜ˆì •
+
     private Rigidbody2D catRb;
+    private Animator catAnim;
     public float jumpPower = 10f;
     public bool isGround = false;
 
@@ -12,19 +16,27 @@ public class CatController : MonoBehaviour
     void Start()
     {
         catRb = GetComponent<Rigidbody2D>();
+        catAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // ½ºÆäÀÌ½º Å° ÀÔ·Â
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount< 2) // ¾Æ¹«°Íµµ ¾È ÀûÀ¸¸é isGround == true¶õ ¶æ + Á¡ÇÁ¸¦ 2´Ü ±îÁö¸¸ °¡´ÉÇÏ°Ô ÇÏ´Â°Í
+        // ìŠ¤í˜ì´ìŠ¤ í‚¤ ì…ë ¥
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount< 2) // ì•„ë¬´ê²ƒë„ ì•ˆ ì ìœ¼ë©´ isGround == trueë€ ëœ» + ì í”„ë¥¼ 2ë‹¨ ê¹Œì§€ë§Œ ê°€ëŠ¥í•˜ê²Œ í•˜ëŠ”ê²ƒ
         {
-            // Á¡ÇÁ = y Ãà ¹æÇâÀ¸·Î ÀÌµ¿ X
-                                                        // ¼ø°£ÀûÀ¸·Î ÈûÀ» °¡ÇÏ´Â ¹æ½Ä = Impulse
+            catAnim.SetTrigger("Jump");
+            catAnim.SetBool("isGround", false);
+            // ì í”„ = y ì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™ X
+                                                        // ìˆœê°„ì ìœ¼ë¡œ í˜ì„ ê°€í•˜ëŠ” ë°©ì‹ = Impulse
             catRb.AddForceY(jumpPower, ForceMode2D.Impulse);
-            jumpCount++; // Á¡ÇÁ ÇÒ¶§¸¶´Ù 1 ¾¿ Áõ°¡.
-                                               
+            jumpCount++; // ì í”„ í• ë•Œë§ˆë‹¤ 1 ì”© ì¦ê°€.
+
+            soundManager.OnJumpSound();
+            catRb.AddForceY(jumpPower, ForceMode2D.Impulse);
+
+            //if (catRb.linearVelocityY) ;
+
         }
     }
 
@@ -32,6 +44,7 @@ public class CatController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground") )
         {
+            catAnim.SetBool("isGround", true);
             jumpCount = 0;
             isGround = true;
         }

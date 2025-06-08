@@ -21,7 +21,7 @@ public class Transform_LoopMap : MonoBehaviour
         {
             randomPosY = Random.Range(-8f, -2.5f);
 
-            transform.position = new Vector3(returnPosX, randomPosY, 0);
+            transform.position = new Vector3(returnPosX, randomPosY, 0.3f);
         }
     }
 }
