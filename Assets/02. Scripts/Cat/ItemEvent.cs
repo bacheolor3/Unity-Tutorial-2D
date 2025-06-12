@@ -12,11 +12,22 @@ public class ItemEvent : MonoBehaviour
     public float returnPosX = 15f;
     public float randomPosY;
 
-    private void Start()
+    private Vector3 initPos;
+
+    private void Awake()
     {
-        SetRandomSetting(transform.position.x);
-        //randomPosY = Random.Range(-8, -3);
-        //transform.position = new Vector3(transform.position.x, randomPosY, 0.3f);
+        initPos = transform.localPosition;
+    }
+    //private void Start()
+    //{
+    //    // SetRandomSetting(transform.position.x);
+    //    //randomPosY = Random.Range(-8, -3);
+    //    //transform.position = new Vector3(transform.position.x, randomPosY, 0.3f);
+    //}
+
+    private void OnEnable() // 처음 시작했던 위치로 재조정
+    {
+        SetRandomSetting(initPos.x);
     }
 
 
